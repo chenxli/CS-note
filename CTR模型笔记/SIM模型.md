@@ -9,7 +9,7 @@ Behavior Data for Click-Through Rate Prediction</a></p>
 
 ### 二、模型结构
 
-![image-20201108002225754](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201108002225754.png)
+![image-20201108002225754](../fig/image-20201108002225754.png)
 
 #### 2.1 GSU
 
@@ -29,7 +29,7 @@ Behavior Data for Click-Through Rate Prediction</a></p>
 
 整个模型的损失函数为：
 
-![image-20201108005000420](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201108005000420.png)
+![image-20201108005000420](../fig/image-20201108005000420.png)
 
 当GSU采用hard-search时，$\alpha$为0；当采用soft-search时，$\alpha$和$\beta$都为1。
 
@@ -37,13 +37,13 @@ Behavior Data for Click-Through Rate Prediction</a></p>
 
 起初阿里巴巴线上实时预测CTR的广告系统流程是这样的：
 
-![image-20201108005311819](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201108005311819.png)
+![image-20201108005311819](../fig/image-20201108005311819.png)
 
 包含两部分：计算节点和预测服务器。
 
 当用户行为数据特别多时，实时预测系统的延迟和存储会受到很大的挑战。采用了SIM后的线上服务系统如下：
 
-![image-20201108005542913](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201108005542913.png)
+![image-20201108005542913](../fig/image-20201108005542913.png)
 
 采用的是hard-search，包含两级索引。第一级索引是用户id，第二级索引是类别id，通过两级索引，便可以找到与目标物品同类别的物品。
 
@@ -51,19 +51,19 @@ Behavior Data for Click-Through Rate Prediction</a></p>
 
 实验数据集：
 
-![image-20201108005859187](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201108005859187.png)
+![image-20201108005859187](../fig/image-20201108005859187.png)
 
 在公开数据集上的效果：
 
-![image-20201108010043315](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201108010043315.png)
+![image-20201108010043315](../fig/image-20201108010043315.png)
 
 验证两阶段搜索架构的有效性：
 
-![image-20201108010137714](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201108010137714.png)
+![image-20201108010137714](../fig/image-20201108010137714.png)
 
 在工业数据集上的效果：
 
-![image-20201108010219992](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201108010219992.png)
+![image-20201108010219992](../fig/image-20201108010219992.png)
 
 ### 五、结论
 

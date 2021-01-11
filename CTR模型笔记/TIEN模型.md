@@ -8,7 +8,7 @@
 
 ### 二、模型结构
 
-![image-20201115003337096](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115003337096.png)
+![image-20201115003337096](../fig/image-20201115003337096.png)
 
 模型的输入包含四部分，分别是用户$u$，候选物品$i$，用户行为序列$I_u$，物品行为序列$U_i$。用户行为序列即用户交互过的物品，按照时间先后的排序结果；物品行为序列则是与该物品交互过的用户（用户特征）按照时间先后的排序结果。
 
@@ -24,23 +24,23 @@
 
   物品和用户特征会转换成为各自的embedding，分别用$e_u$和$e_i$表示。
 
-  ![image-20201115004251885](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115004251885.png)
+  ![image-20201115004251885](../fig/image-20201115004251885.png)
 
   用户行为序列中的每一件物品特征转成对应的embedding，用$S_u$表示，物品行为序列中每一个用户特征也转换成对应的embedding，用$S_i$表示。
 
-  ![image-20201115004648597](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115004648597.png)
+  ![image-20201115004648597](../fig/image-20201115004648597.png)
 
-  ![image-20201115004705286](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115004705286.png)
+  ![image-20201115004705286](../fig/image-20201115004705286.png)
 
 - Time-Interval Attention Layer
 
   $tiv(k)$表示在当前请求时刻$t$与物品行为序列中第K个用户与该物品交互时间的时间间隔。将时间间隔进行分段，[0,1),[1,2),[2,4),....,[$2^j,2^{j+1}$)，找到$tiv(k)$对应的分段，便可以把它变成离散的特征，用$x_{tiv(k)}$表示，然后转换对应的embedding表示：
 
-  ![image-20201115005450646](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115005450646.png)
+  ![image-20201115005450646](../fig/image-20201115005450646.png)
 
   同时通过GRU对物品行为的演化过程进行建模，将每个时间步GRU的hidden state表示为$h_{uk}$，并把时间间隔作为权重，与$h_{uk}$进行element-wise相加融合，得到$h_{utk}$。
 
-  ![image-20201115005817649](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115005817649.png)
+  ![image-20201115005817649](../fig/image-20201115005817649.png)
 
 - Robust Personalized Attention Layer
 
@@ -48,25 +48,25 @@
 
   第一个目标实现：将embedding layer物品行为序列中的各个用户embedding继续average pooling，然后与当前用户的embedding进行相加。
 
-  ![image-20201115010515543](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115010515543.png)
+  ![image-20201115010515543](../fig/image-20201115010515543.png)
 
   第二个目标实现：用注意力机制，计算公式如下：
 
-  ![image-20201115010908635](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115010908635.png)
+  ![image-20201115010908635](../fig/image-20201115010908635.png)
 
   其中$Q$是$e_{u_{smooth}}$,$K$是融合了时间间隔的$h_{ut(k)}$，$V$是没有加入时间间隔的物品行为序列中用户的embedding，即$h_{uk}$。
 
   经过多头注意力机制的计算，最终输出$e_{rpi}$。
 
-  ![image-20201115011354446](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115011354446.png)
+  ![image-20201115011354446](../fig/image-20201115011354446.png)
 
-  ![image-20201115011552978](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115011552978.png)
+  ![image-20201115011552978](../fig/image-20201115011552978.png)
 
 - Time-aware Evolution Layer
 
   建模物品的潮流趋势，或者生命周期。做法是将时间向量输入到GRU中。
 
-  ![image-20201115012346966](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115012346966.png)
+  ![image-20201115012346966](../fig/image-20201115012346966.png)
 
   再将此输出与Robust Personlized Attention Layer的输出$e_{rpi}$进行融合，得到最终的物品行为序列的向量表示，融合的方式有element-wise相加，相乘或者更加复杂的非线性方式等等。
 
@@ -76,25 +76,25 @@
 
 如果是CTR预测任务，使用的损失函数为：
 
-![image-20201115013046397](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115013046397.png)
+![image-20201115013046397](../fig/image-20201115013046397.png)
 
 ### 三、模型效果
 
 实验数据集：
 
-![image-20201115013249975](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115013249975.png)
+![image-20201115013249975](../fig/image-20201115013249975.png)
 
 实验指标AUC，对比实验结果：
 
-![image-20201115013346681](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115013346681.png)
+![image-20201115013346681](../fig/image-20201115013346681.png)
 
 验证TIEN中各个layer的有效性：
 
-![image-20201115013457942](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115013457942.png)
+![image-20201115013457942](../fig/image-20201115013457942.png)
 
 研究物品行为序列的长度：
 
-![image-20201115013619895](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201115013619895.png)
+![image-20201115013619895](../fig/image-20201115013619895.png)
 
 ### 四、结论
 

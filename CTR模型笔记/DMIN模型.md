@@ -10,37 +10,37 @@
 
 #### 二、模型结构
 
-![image-20201105211336917](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201105211336917.png)
+![image-20201105211336917](../fig/image-20201105211336917.png)
 
 - Embedding层：四类特征：用户信息，用户历史行为，上下文信息，目标物品。全部通过embedding变成低维稠密的向量，其中用户历史行为包括历史物品embedding和其位置编码。
 
 - 行为重定义层：通过将历史物品和位置编码进行多头自注意力机制的计算，并辅以一个损失函数训练出更好的向量表示。
 
-  ![image-20201105212908975](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201105212908975.png)
+  ![image-20201105212908975](../fig/image-20201105212908975.png)
 
 - 多重兴趣提取层：将行为重定义层训练出来的物品向量表示，通过多头自注意力机制得到在多个子空间下的物品向量表示，对于每个头，通过一个attention unit计算在该子空间内历史物品与目标物品之间的相关性，加权平均得到该子空间下的兴趣。
 
-  ![image-20201105212928578](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201105212928578.png)
+  ![image-20201105212928578](../fig/image-20201105212928578.png)
 
-  ![image-20201105213042440](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201105213042440.png)
+  ![image-20201105213042440](../fig/image-20201105213042440.png)
 
 - MLP层：将捕捉到的多重兴趣和用户信息，目标物品，上下文信息等拼接后输入到MLP中，最终输出点击率预测结果。 
 
 - 损失函数为对数损失函数：
 
-  ![image-20201105213129618](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201105213129618.png)
+  ![image-20201105213129618](../fig/image-20201105213129618.png)
 
-![image-20201105213156053](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201105213156053.png)
+![image-20201105213156053](../fig/image-20201105213156053.png)
 
 #### 三、模型效果
 
 实验数据集：
 
-![image-20201105213240819](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201105213240819.png)
+![image-20201105213240819](../fig/image-20201105213240819.png)
 
 实验指标为AUC，在三个数据集上都有所提升，并且作者也对辅助损失函数和位置编码的有效性进行了验证。
 
-![image-20201105213444927](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201105213444927.png)
+![image-20201105213444927](../fig/image-20201105213444927.png)
 
 #### 四、结论
 

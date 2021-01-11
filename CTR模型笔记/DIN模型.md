@@ -8,7 +8,7 @@
 
 ### 二、模型结构
 
-![image-20201119231718939](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119231718939.png)
+![image-20201119231718939](../fig/image-20201119231718939.png)
 
 左边的模型是base model，它将用户行为序列中的物品embedding进行sum pooling，然后跟用户特征，候选物品特征，上下文特征拼接到一起，形成一个固定长度的向量，输入MLP中。
 
@@ -16,23 +16,23 @@
 
 #### 2.1 特征的表示
 
-![image-20201119232357463](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119232357463.png)
+![image-20201119232357463](../fig/image-20201119232357463.png)
 
 每个group的特征都会有一个embedding lookup，比如第$i$个group的loopup表示为：
 
-![image-20201119232524313](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119232524313.png)
+![image-20201119232524313](../fig/image-20201119232524313.png)
 
 $D$表示embedding维度，$K_i$表示特征维度。
 
 用户兴趣向量计算公式为：
 
-![image-20201119232732037](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119232732037.png)
+![image-20201119232732037](../fig/image-20201119232732037.png)
 
 $v_U(A)$表示用户$U$对候选物品$A$的兴趣，$w_j$表示用户行为序列中的第$j$个物品$e_j$与候选物品$v_A$通过activation unit计算出来的权重。
 
 损失函数：
 
-![image-20201119233041387](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119233041387.png)
+![image-20201119233041387](../fig/image-20201119233041387.png)
 
 #### 2.2 两点训练的tricks
 
@@ -40,63 +40,63 @@ $v_U(A)$表示用户$U$对候选物品$A$的兴趣，$w_j$表示用户行为序�
 
   为了避免过拟合，会加入L1正则项或者L2正则项，但是这样每次都会更新全部参数，这样极大地增加了计算压力。MAR技术是指只更新当前mini-batch中在出现过的特征的所对应的参数。以L2正则项为例，公式为：
 
-  ![image-20201119234120416](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119234120416.png)
+  ![image-20201119234120416](../fig/image-20201119234120416.png)
 
   在mini batch中，等价于：
 
-  ![image-20201119234317739](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119234317739.png)
+  ![image-20201119234317739](../fig/image-20201119234317739.png)
 
   B表示mini-batch的个数，$B_m$表示第$m$个mini batch。令$\alpha_{mj}=max_{(x,y)\in B_m}I(x_j \neq 0)$，则上式可以近似为：
 
-  ![image-20201119234611150](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119234611150.png)
+  ![image-20201119234611150](../fig/image-20201119234611150.png)
 
   更新公式为：
 
-  ![image-20201119234632484](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119234632484.png)
+  ![image-20201119234632484](../fig/image-20201119234632484.png)
 
 - Data Adaptive Activation Function
 
   论文这里对常用的PReLU激活函数进行了改进。PReLU公式表示为：
 
-  ![image-20201119235208100](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119235208100.png)
+  ![image-20201119235208100](../fig/image-20201119235208100.png)
 
   其中，$p(s)=I(s>0)$。
 
   对$p(s)$重新定义，设计出一种新的数据自调整（作用类似于BN，可以自动调整数据分布，避免过拟合）的激活函数Dice。
 
-  ![image-20201119235631380](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119235631380.png)
+  ![image-20201119235631380](../fig/image-20201119235631380.png)
 
-  ![image-20201119235655141](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119235655141.png)
+  ![image-20201119235655141](../fig/image-20201119235655141.png)
 
 ### 三、模型效果
 
 数据集：
 
-![image-20201119235725993](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119235725993.png)
+![image-20201119235725993](../fig/image-20201119235725993.png)
 
 实验指标：改进过的AUC（gAUC）。
 
-![image-20201119235838341](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119235838341.png)
+![image-20201119235838341](../fig/image-20201119235838341.png)
 
-![image-20201119235917680](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201119235917680.png)
+![image-20201119235917680](../fig/image-20201119235917680.png)
 
 实验结果：
 
-![image-20201120000001751](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201120000001751.png)
+![image-20201120000001751](../fig/image-20201120000001751.png)
 
-![image-20201120000016525](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201120000016525.png)
+![image-20201120000016525](../fig/image-20201120000016525.png)
 
 比较不同正则化手段的效果：
 
-![image-20201120000029897](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201120000029897.png)
+![image-20201120000029897](../fig/image-20201120000029897.png)
 
 在阿里巴巴的数据集上的效果（AB测试效果）：
 
-![image-20201120000230061](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201120000230061.png)
+![image-20201120000230061](../fig/image-20201120000230061.png)
 
 可视化：
 
-![image-20201120000418839](C:\Users\CXL\AppData\Roaming\Typora\typora-user-images\image-20201120000418839.png)
+![image-20201120000418839](../fig/image-20201120000418839.png)
 
 ### 四、结论
 
