@@ -1,0 +1,29 @@
+class Solution {
+public:
+    /**
+     * @param s0: the number s[0]
+     * @param n: the number n
+     * @param k: the number k
+     * @param b: the number b
+     * @param m: the number m
+     * @param a: area
+     * @return: the way can paint the ceiling
+     */
+    long long painttheCeiling(int s0, int n, int k, int b, int m, long long a) {
+        // write your code here
+        vector<long long> v(n);
+        v[0] = s0;
+        for (int i = 1; i < n; i++) v[i] = v[i - 1] + 1 + (k * v[i - 1] + b) % m; 
+        long long ans = 0;
+        int left = 0, right = n - 1;
+        while (left < n && right >= 0) {
+            if (v[left] * v[right] <= a) {
+                ans += right + 1;
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return ans;
+    }
+};
